@@ -11,7 +11,10 @@ public:
     [[nodiscard]] int run();
 
 private:
+    void gui();
+
     sf::RenderWindow m_window;
+    bool m_imguiInit;
     sf::Clock m_deltaClock;
     sf::Time m_deltaTime;
     bool m_modeDebug;
