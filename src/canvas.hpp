@@ -8,6 +8,11 @@ public:
     Canvas(const sf::Vector2u texSize);
     ~Canvas();
 
+    void update(sf::Time deltaTime);
+    void setParentWindow(sf::RenderWindow*);
+
+    void gui();
+
 private:
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
 
@@ -16,4 +21,7 @@ private:
     sf::Vector2u m_texSize;
 
     sf::RectangleShape m_shape;
+    int m_brushSize;
+    
+    sf::RenderWindow* m_parentWindow;
 };

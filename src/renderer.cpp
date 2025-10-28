@@ -13,6 +13,7 @@ Renderer::Renderer() :
     m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
     m_canvas({WINDOW_SIZE.y, WINDOW_SIZE.y})
 { 
+    m_canvas.setParentWindow(&m_window);
     m_window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 
     sf::Vector2u screenSize = sf::VideoMode::getFullscreenModes()[0].size;
@@ -43,6 +44,8 @@ int Renderer::run() {
         ImGui::SFML::Update(m_window, m_deltaTime);
         gui();
 
+        m_canvas.update(m_deltaTime);
+
         m_window.clear();
         m_window.draw(m_canvas);
 
@@ -56,5 +59,6 @@ void Renderer::gui() {
     ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
     ImGui::SetWindowSize({INSPECTOR_SIZE_X, WINDOW_SIZE.y});
     ImGui::SetWindowPos({WINDOW_SIZE.x - INSPECTOR_SIZE_X, 0});
+    m_canvas.gui();
     ImGui::End();
 }
