@@ -7,7 +7,8 @@ Canvas::Canvas(const sf::Vector2u _texSize) :
     m_texSize(_texSize),
     m_texture(_texSize),
     m_shape((sf::Vector2f)_texSize),
-    m_brushSize(DEFAULT_BRUSH_SIZE)
+    m_brushSize(DEFAULT_BRUSH_SIZE),
+    m_modeEraser(false)
 {
     m_pixels = new uint32_t[m_texSize.x * m_texSize.y];
     
@@ -30,7 +31,7 @@ void Canvas::update(sf::Time deltaTime) {
            mousePos.y > 0 && mousePos.y < m_texSize.x) {
             for(unsigned int y = mousePos.y - m_brushSize; y <= mousePos.y + m_brushSize; y++) {
                 for(unsigned int x = mousePos.x - m_brushSize; x <= mousePos.x + m_brushSize; x++) {
-                    m_pixels[y * m_texSize.x + x] = 0xffffffff;
+                    m_pixels[y * m_texSize.x + x] = m_modeEraser ? 0x00000000 : 0xffffffff;
                 }
             }
                     
@@ -45,6 +46,7 @@ void Canvas::setParentWindow(sf::RenderWindow* _windowPtr) {
 
 void Canvas::gui() {
     ImGui::DragInt("Brush Size", &m_brushSize);
+    ImGui::Checkbox("Eraser Mode", &m_modeEraser);
 }
 
 void Canvas::draw(sf::RenderTarget& target, sf::RenderStates states) const {
