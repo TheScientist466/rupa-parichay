@@ -3,6 +3,8 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics.hpp>
 
+#include "canvas.hpp"
+
 class Renderer {
 public:
     Renderer();
@@ -18,4 +20,6 @@ private:
     sf::Clock m_deltaClock;
     sf::Time m_deltaTime;
     bool m_modeDebug;
+
+    Canvas m_canvas;
 };

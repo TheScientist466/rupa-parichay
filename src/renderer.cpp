@@ -1,15 +1,17 @@
 #include "renderer.hpp"
 
-#include "SFML/System/Vector2.hpp"
-#include "SFML/Window/VideoMode.hpp"
-#include "config.hpp"
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/VideoMode.hpp>
 
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <iostream>
 
+#include "config.hpp"
+
 Renderer::Renderer() :
-    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close)
+    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
+    m_canvas({WINDOW_SIZE.y, WINDOW_SIZE.y})
 { 
     m_window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 
@@ -42,6 +44,8 @@ int Renderer::run() {
         gui();
 
         m_window.clear();
+        m_window.draw(m_canvas);
+
         ImGui::SFML::Render(m_window);
         m_window.display();
     }

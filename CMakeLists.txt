@@ -7,6 +7,7 @@ set(
     src_files 
     "src/main.cpp"
     "src/renderer.cpp"
+    "src/canvas.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${src_files})
