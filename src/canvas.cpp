@@ -14,6 +14,7 @@ Canvas::Canvas(const sf::Vector2u _texSize) :
     m_brushIndicator(DEFAULT_BRUSH_SIZE),
     m_brushShape(DEFAULT_BRUSH_SIZE)
 {
+    m_texture.clear(sf::Color::Black);
     m_shape.setTexture(&m_texture.getTexture());
    
     m_brushShape.setOrigin(sf::Vector2f(DEFAULT_BRUSH_SIZE, DEFAULT_BRUSH_SIZE));
@@ -31,7 +32,8 @@ void Canvas::update(sf::Time deltaTime) {
     m_brushIndicator.setPosition((sf::Vector2f)mousePos);
     m_brushShape.setPosition(sf::Vector2f(mousePos.x, WINDOW_SIZE.y - mousePos.y));
     if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-        m_texture.draw(m_brushShape);
+        if(mousePos.x > 0 && mousePos.x < m_texSize.x && mousePos.y > 0 && mousePos.y < m_texSize.y) 
+            m_texture.draw(m_brushShape);
     }
 } 
 
@@ -50,7 +52,7 @@ void Canvas::gui() {
         m_brushIndicator.setOrigin(sf::Vector2f(m_brushSize, m_brushSize));
     }
     if(ImGui::Checkbox("Eraser Mode", &m_modeEraser)) {
-        m_brushShape.setOutlineColor(m_modeEraser ? sf::Color::Red : sf::Color::Green);
+        m_brushIndicator.setOutlineColor(m_modeEraser ? sf::Color::Red : sf::Color::Green);
         m_brushShape.setFillColor(m_modeEraser ? sf::Color::Black : sf::Color::White);
     }
 }
