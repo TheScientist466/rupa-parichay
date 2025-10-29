@@ -42,6 +42,9 @@ void Canvas::setParentWindow(sf::RenderWindow* _windowPtr) {
 }
 
 void Canvas::gui() {
+    if(ImGui::Button("Clear")) {
+        m_texture.clear(sf::Color::Black);
+    }
     if(ImGui::DragInt("Brush Size", &m_brushSize)) {
         m_brushShape.setPosition({0, 0});
         m_brushShape.setRadius(m_brushSize);
