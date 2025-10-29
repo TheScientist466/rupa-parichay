@@ -23,6 +23,7 @@ private:
     sf::RectangleShape m_shape;
     int m_brushSize;
     bool m_modeEraser;
+    sf::RectangleShape m_brushShape;
     
     sf::RenderWindow* m_parentWindow;
 };
