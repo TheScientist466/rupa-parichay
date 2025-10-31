@@ -21,6 +21,8 @@ private:
     
     bool m_usePixelator;
     float m_pixelatorFactor;
+    sf::Vector2f m_texelSize;
+    sf::Vector2i m_sampleRect;
     sf::Shader m_pixelator;
 
     sf::RectangleShape m_shape;

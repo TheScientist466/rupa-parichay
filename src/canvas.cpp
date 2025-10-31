@@ -13,7 +13,9 @@ Canvas::Canvas(const sf::Vector2u _texSize) :
     m_brushIndicator(DEFAULT_BRUSH_SIZE),
     m_brushShape(DEFAULT_BRUSH_SIZE),
     m_pixelatorFactor(DEFAULT_PIXELATOR_FACTOR),
-    m_usePixelator(false)
+    m_usePixelator(false),
+    m_texelSize(0.1f, 0.1f),
+    m_sampleRect({2, 2})
 {
     m_shape.setTexture(&m_texture.getTexture());
     m_texture.clear(sf::Color::Black);
@@ -42,6 +44,8 @@ void Canvas::update(sf::Time deltaTime) {
     }
     m_pixelator.setUniform("tex", m_texture.getTexture());
     m_pixelator.setUniform("factor", m_pixelatorFactor);
+    m_pixelator.setUniform("texelSize", m_texelSize);
+    m_pixelator.setUniform("sampleRect", m_sampleRect);
 } 
 
 void Canvas::setParentWindow(sf::RenderWindow* _windowPtr) {
@@ -67,6 +71,17 @@ void Canvas::gui() {
     }
     ImGui::Checkbox("Use Pixelator", &m_usePixelator);
     ImGui::DragFloat("Pixelator Factor", &m_pixelatorFactor, 1.f, 0.f, 0.f, "%.2f");
+
+    float _texelSize[2] = {m_texelSize.x, m_texelSize.y};
+    if(ImGui::DragFloat2("Texel Size", _texelSize, 0.001f, 0.f, 1.f)) { 
+        m_texelSize = {_texelSize[0], _texelSize[1]};
+    }
+
+    int _sampleRect[2] = {m_sampleRect.x, m_sampleRect.y};
+    if(ImGui::DragInt2("Sample Rectangle", _sampleRect)) {
+        m_sampleRect = {_sampleRect[0], _sampleRect[1]};
+    }
+
 }
 
 void Canvas::draw(sf::RenderTarget& target, sf::RenderStates states) const {
