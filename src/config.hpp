@@ -11,3 +11,5 @@ constexpr unsigned int INSPECTOR_SIZE_X = 300;
 
 constexpr unsigned int DEFAULT_BRUSH_SIZE = 10;
 constexpr float DEFAULT_PIXELATOR_FACTOR = 30.f;
+constexpr float DEFAULT_TEXEL_SIZE = 0.005f;
+constexpr int DEFAULT_SAMPLE_SIZE = 2;

@@ -14,8 +14,8 @@ Canvas::Canvas(const sf::Vector2u _texSize) :
     m_brushShape(DEFAULT_BRUSH_SIZE),
     m_pixelatorFactor(DEFAULT_PIXELATOR_FACTOR),
     m_usePixelator(false),
-    m_texelSize(0.1f, 0.1f),
-    m_sampleRect({2, 2})
+    m_texelSize(DEFAULT_TEXEL_SIZE, DEFAULT_TEXEL_SIZE),
+    m_sampleRect({DEFAULT_SAMPLE_SIZE, DEFAULT_SAMPLE_SIZE})
 {
     m_shape.setTexture(&m_texture.getTexture());
     m_texture.clear(sf::Color::Black);
@@ -79,7 +79,7 @@ void Canvas::gui() {
 
     int _sampleRect[2] = {m_sampleRect.x, m_sampleRect.y};
     if(ImGui::DragInt2("Sample Rectangle", _sampleRect)) {
-        m_sampleRect = {_sampleRect[0], _sampleRect[1]};
+        m_sampleRect = {abs(_sampleRect[0]), abs(_sampleRect[1])};
     }
 
 }
