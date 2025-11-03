@@ -39,6 +39,9 @@ int Renderer::run() {
             if(event->is<sf::Event::Closed>()) {
                 m_window.close();
             }
+            if(const auto* mouseWheelScrollEvent = event->getIf<sf::Event::MouseWheelScrolled>()) {
+                m_canvas.mouseWheelScrollCallback(mouseWheelScrollEvent);
+            }
         }
         m_deltaTime = m_deltaClock.restart();
         ImGui::SFML::Update(m_window, m_deltaTime);

@@ -1,4 +1,5 @@
 #include "canvas.hpp"
+#include "SFML/Window/Event.hpp"
 #include "config.hpp"
 
 #include <imgui.h>
@@ -57,13 +58,7 @@ void Canvas::gui() {
         m_texture.clear(sf::Color::Black);
     }
     if(ImGui::DragInt("Brush Size", &m_brushSize)) {
-        m_brushShape.setPosition({0, 0});
-        m_brushShape.setRadius(m_brushSize);
-        m_brushShape.setOrigin(sf::Vector2f(m_brushSize, m_brushSize));
-
-        m_brushIndicator.setPosition({0, 0});
-        m_brushIndicator.setRadius(m_brushSize);
-        m_brushIndicator.setOrigin(sf::Vector2f(m_brushSize, m_brushSize));
+        setBrushRadius(m_brushSize);
     }
     if(ImGui::Checkbox("Eraser Mode", &m_modeEraser)) {
         m_brushIndicator.setOutlineColor(m_modeEraser ? sf::Color::Red : sf::Color::Green);
@@ -82,6 +77,25 @@ void Canvas::gui() {
         m_sampleRect = {abs(_sampleRect[0]), abs(_sampleRect[1])};
     }
 
+}
+
+void Canvas::mouseWheelScrollCallback(const sf::Event::MouseWheelScrolled* _event) {
+    setBrushRadius(m_brushSize + _event->delta);
+}
+
+int Canvas::getBrushRadius() const {
+    return m_brushSize;
+}
+
+void Canvas::setBrushRadius(int _rad) {
+    m_brushSize = _rad;
+    m_brushShape.setPosition({0, 0});
+    m_brushShape.setRadius(m_brushSize);
+    m_brushShape.setOrigin(sf::Vector2f(m_brushSize, m_brushSize));
+
+    m_brushIndicator.setPosition({0, 0});
+    m_brushIndicator.setRadius(m_brushSize);
+    m_brushIndicator.setOrigin(sf::Vector2f(m_brushSize, m_brushSize));
 }
 
 void Canvas::draw(sf::RenderTarget& target, sf::RenderStates states) const {

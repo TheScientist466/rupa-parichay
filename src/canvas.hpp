@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SFML/Window/Event.hpp"
 #include <SFML/Graphics.hpp>
 #include <stdint.h>
 
@@ -12,6 +13,10 @@ public:
     void setParentWindow(sf::RenderWindow*);
 
     void gui();
+    void mouseWheelScrollCallback(const sf::Event::MouseWheelScrolled*);
+    
+    int getBrushRadius() const;
+    void setBrushRadius(int radius);
 
 private:
     void draw(sf::RenderTarget&, sf::RenderStates) const override;
