@@ -7,14 +7,14 @@ public:
     Layer(unsigned int n_nodes);
     ~Layer();
     
-    float operator[](unsigned int index);
+    float& operator[](size_t index);
 
-    void connectPrevious(Layer* prev);
+    void connectPrevious(Layer* prev);       
     void calculateActivations();
     void randomizeWeightsBiases(uint64_t seed);
 
 private:
-    unsigned int m_nodes;
+    size_t m_nodes;
 
     float* m_activations;
     float* m_biases;
@@ -22,4 +22,7 @@ private:
     bool m_connectedPrevious;
     Layer* m_previousLayer;
     float* m_weights;
+
+    float (*activationFunc)(float x);
 };
+
