@@ -1,3 +1,5 @@
 build/
 .cache/
 imgui.ini
+dataSetsForTraining/
+.vscode/

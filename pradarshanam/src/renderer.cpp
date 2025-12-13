@@ -9,6 +9,9 @@
 
 #include "config.hpp"
 
+
+int trainAndSaveModel();
+
 Renderer::Renderer() :
     m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
     m_canvas({WINDOW_SIZE.y, WINDOW_SIZE.y})
@@ -63,5 +66,8 @@ void Renderer::gui() {
     ImGui::SetWindowSize({INSPECTOR_SIZE_X, WINDOW_SIZE.y});
     ImGui::SetWindowPos({WINDOW_SIZE.x - INSPECTOR_SIZE_X, 0});
     m_canvas.gui();
+    if (ImGui::Button("save and train")) {
+        trainAndSaveModel();
+    }
     ImGui::End();
 }

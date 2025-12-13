@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.21)
 set(
     mastishk_src_files
     "src/Layer.cpp"
+    "src/trainer.cpp"
 )
 
 add_library(mastishk STATIC ${mastishk_src_files})

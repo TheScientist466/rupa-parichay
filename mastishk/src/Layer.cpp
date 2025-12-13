@@ -39,17 +39,29 @@ void Layer::randomizeWeightsBiases(uint64_t seed) {
     }
 }
 
-void Layer::calculateActivations(){
-    Matrix<float> currAcctivations = { .rows = m_nodes, .cols = 1, .data = m_activations };
-    Matrix<float> weight = {.rows = m_nodes, .cols =  m_previousLayer->m_nodes, .data = m_weights};
-    Matrix<float> previousActivations = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
-    Matrix<float> biases = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
-    Matrix<float> product = multiplyMatrix(weight, previousActivations);
-    currAcctivations = addMatrix(product, biases);
-    delete[] product.data;
+void Layer::calculateActivations(float* firstlayerInput){
+    
+    if(firstlayerInput == nullptr){
+        Matrix<float> currAcctivations = { .rows = m_nodes, .cols = 1, .data = m_activations };
+        Matrix<float> weight = {.rows = m_nodes, .cols =  m_previousLayer->m_nodes, .data = m_weights};
+        Matrix<float> previousActivations = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
+        Matrix<float> biases = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
+        Matrix<float> product = multiplyMatrix(weight, previousActivations);
+        currAcctivations = addMatrix(product, biases);
+        delete[] product.data;
+    }else{
+        m_activations =firstlayerInput;
+    }
+    
     
 }
-float& Layer::operator[](size_t index) {
-    return m_activations[index];
+float* Layer::producingTheActivation() {
+    return m_activations;
+}
+Layer* Layer::GenaratingPrevious(){
+    return m_previousLayer;
+}
+bool Layer::ifPreviousLayer(){
+    return m_connectedPrevious;
 }
 
