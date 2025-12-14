@@ -12,7 +12,9 @@ public:
     float* producingTheActivation();//takes out the value of activation function.
     Layer* GenaratingPrevious();
     bool ifPreviousLayer();
-private:
+    float* WeightsOfTheLayer();
+    float* BiasesOfTheLayer();
+
     size_t m_nodes;
     float* m_biases;
     float* m_activations;

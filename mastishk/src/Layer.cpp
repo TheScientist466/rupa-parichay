@@ -64,4 +64,10 @@ Layer* Layer::GenaratingPrevious(){
 bool Layer::ifPreviousLayer(){
     return m_connectedPrevious;
 }
+float* Layer:: WeightsOfTheLayer(){
+    return m_weights;
+}
 
+float* Layer:: BiasesOfTheLayer(){
+    return m_biases;
+}
