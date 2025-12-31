@@ -9,22 +9,23 @@ Layer::Layer(unsigned int n_nodes) :
     m_previousLayer(nullptr) 
 {
     m_activations = new float[m_nodes];
-    m_biases = new float[m_nodes];
+    m_biases = nullptr;
     m_weights = nullptr; // Weights will be allocated when connecting to previous layer
 }
 
 Layer::~Layer() {
     delete[] m_activations;
-    delete[] m_biases;
     if(m_connectedPrevious)
         delete[] m_weights;
+        delete[] m_biases;
 }
 
 void Layer::connectPrevious(Layer* prev) {
     m_previousLayer = prev;
     m_connectedPrevious = true;
-    size_t totalSize = m_nodes * m_previousLayer->m_nodes;
-    float* m_weights = new float[totalSize];
+    size_t totalSize = m_nodes * m_previousLayer->numberOfNodes();
+    m_weights = new float[totalSize];
+    m_biases = new float[m_nodes];
 }
 
 void Layer::randomizeWeightsBiases(uint64_t seed) { 
@@ -44,8 +45,8 @@ void Layer::calculateActivations(float* firstlayerInput){
     if(firstlayerInput == nullptr){
         Matrix<float> currAcctivations = { .rows = m_nodes, .cols = 1, .data = m_activations };
         Matrix<float> weight = {.rows = m_nodes, .cols =  m_previousLayer->m_nodes, .data = m_weights};
-        Matrix<float> previousActivations = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
-        Matrix<float> biases = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_activations};
+        Matrix<float> previousActivations = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->producingTheActivation()};
+        Matrix<float> biases = {.rows = m_previousLayer->m_nodes, .cols = 1, .data = m_previousLayer->m_biases};
         Matrix<float> product = multiplyMatrix(weight, previousActivations);
         currAcctivations = addMatrix(product, biases);
         delete[] product.data;
@@ -58,16 +59,10 @@ void Layer::calculateActivations(float* firstlayerInput){
 float* Layer::producingTheActivation() {
     return m_activations;
 }
-Layer* Layer::GenaratingPrevious(){
-    return m_previousLayer;
+size_t Layer::numberOfNodes(){
+    return m_nodes;
 }
 bool Layer::ifPreviousLayer(){
     return m_connectedPrevious;
 }
-float* Layer:: WeightsOfTheLayer(){
-    return m_weights;
-}
 
-float* Layer:: BiasesOfTheLayer(){
-    return m_biases;
-}

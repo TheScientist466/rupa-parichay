@@ -23,3 +23,6 @@ private:
 
     Canvas m_canvas;
 };
+
+void trainAndSaveModel();
+void ModelTesting();

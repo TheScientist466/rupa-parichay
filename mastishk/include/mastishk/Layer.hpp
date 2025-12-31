@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstddef>
 #include <stdint.h>
 
 class Layer {
@@ -10,11 +10,11 @@ public:
     void calculateActivations(float*firstLayerInput);
     void randomizeWeightsBiases(uint64_t seed);
     float* producingTheActivation();//takes out the value of activation function.
-    Layer* GenaratingPrevious();
     bool ifPreviousLayer();
-    float* WeightsOfTheLayer();
-    float* BiasesOfTheLayer();
-
+    size_t numberOfNodes();
+    friend void trainAndSaveModel();
+    friend float *ValueOfNetWorkCalculater(Layer *currentLayer, float *input);
+private:
     size_t m_nodes;
     float* m_biases;
     float* m_activations;

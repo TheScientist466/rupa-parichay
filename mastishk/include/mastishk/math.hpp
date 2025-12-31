@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+#include <cassert>
 #include <cstddef>
 #include <stdint.h>
 
@@ -9,8 +10,6 @@ template <class T> struct Matrix {
   size_t cols;
   T *data;
 };
-/// sigmoid function
-float sigmoid(float x) {};
 
 /// @brief Multiplies 2 matrices
 /// @tparam T
