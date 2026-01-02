@@ -5,6 +5,7 @@ set(
     "src/main.cpp"
     "src/renderer.cpp"
     "src/canvas.cpp"
+    "src/program_states.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${pradarshanam_src_files})

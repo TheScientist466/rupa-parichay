@@ -1,7 +1,7 @@
 #include "mastishk/Layer.hpp"
 #include <fstream>
 #include <iostream>
-#include "../../pradarshanam/src/renderer.hpp"
+
 float cost(float *value, float *labled) {
   float total = 0;
   for (int i = 0; i < 10; i++) {

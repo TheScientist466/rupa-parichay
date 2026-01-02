@@ -8,12 +8,11 @@
 #include <iostream>
 
 #include "config.hpp"
+#include "program_states.hpp"
 
 Renderer::Renderer() :
-    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
-    m_canvas({WINDOW_SIZE.y, WINDOW_SIZE.y})
+    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close)
 { 
-    m_canvas.setParentWindow(&m_window);
     m_window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 
     sf::Vector2u screenSize = sf::VideoMode::getFullscreenModes()[0].size;
@@ -25,6 +24,7 @@ Renderer::Renderer() :
         return;
     }
     m_imguiInit = true;
+    m_currStateDispatcher.setProgramState(initState);
 }
 
 Renderer::~Renderer() = default;
@@ -39,32 +39,17 @@ int Renderer::run() {
             if(event->is<sf::Event::Closed>()) {
                 m_window.close();
             }
-            if(const auto* mouseWheelScrollEvent = event->getIf<sf::Event::MouseWheelScrolled>()) {
-                m_canvas.mouseWheelScrollCallback(mouseWheelScrollEvent);
-            }
         }
         m_deltaTime = m_deltaClock.restart();
         ImGui::SFML::Update(m_window, m_deltaTime);
-        gui();
 
-        m_canvas.update(m_deltaTime);
+        m_currStateDispatcher.update(m_deltaTime);
+        m_currStateDispatcher.gui();
 
         m_window.clear();
-        m_window.draw(m_canvas);
-
+        m_currStateDispatcher.draw();
         ImGui::SFML::Render(m_window);
         m_window.display();
     }
     return 0;
-}
-
-void Renderer::gui() {
-    ImGui::Begin("Inspector", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-    ImGui::SetWindowSize({INSPECTOR_SIZE_X, WINDOW_SIZE.y});
-    ImGui::SetWindowPos({WINDOW_SIZE.x - INSPECTOR_SIZE_X, 0});
-    m_canvas.gui();
-    // if (ImGui::Button("save and train")) {
-    //     trainAndSaveModel();
-    // }
-    ImGui::End();
 }
