@@ -1,8 +1,8 @@
 #include "program_states.hpp"
-#include "SFML/System/Time.hpp"
 
 #include <iostream>
 #include <imgui.h>
+#include <SFML/System/Time.hpp>
 
 void ProgramStateDispatcher::update(sf::Time dt)        { m_currState->m_update(dt); }
 void ProgramStateDispatcher::gui()                      { m_currState->m_gui(); }
@@ -14,8 +14,13 @@ void ProgramStateDispatcher::setProgramState(ProgramState& s) {
         m_currState->m_shutdown();
     }
     m_currState = &s;
+    m_currState->m_context = &m_currCtx;
     m_currState->m_init();
 }
+
+ProgramStateDispatcher::ProgramStateDispatcher(ProgramStateContext _ctx) :
+    m_currCtx(_ctx)
+{ }
 
 ProgramStateDispatcher::~ProgramStateDispatcher() {
     if(m_currState != nullptr) {

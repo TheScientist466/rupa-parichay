@@ -11,7 +11,8 @@
 #include "program_states.hpp"
 
 Renderer::Renderer() :
-    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close)
+    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
+    m_currStateDispatcher({&m_window})
 { 
     m_window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 

@@ -1,6 +1,11 @@
 #pragma once
 
-#include "SFML/System/Time.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Time.hpp>
+
+struct ProgramStateContext {
+    sf::RenderWindow* window;
+};
 
 struct ProgramState {
     // function to run when the state is loaded
@@ -20,9 +25,12 @@ struct ProgramState {
 
     // function which returns which state to change to
     ProgramState* (*m_getNextState)();
+
+    ProgramStateContext* m_context;
 };
 
 struct ProgramStateDispatcher {
+    ProgramStateDispatcher(ProgramStateContext ctx);
     ~ProgramStateDispatcher();
 
     void update(sf::Time deltaTime);
@@ -32,6 +40,7 @@ struct ProgramStateDispatcher {
 
     void setProgramState(ProgramState& state);
 private:
+    ProgramStateContext m_currCtx;
     ProgramState* m_currState = nullptr;
 };
 
