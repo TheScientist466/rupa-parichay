@@ -25,12 +25,9 @@ struct ProgramState {
 
     // function which returns which state to change to
     ProgramState* (*m_getNextState)();
-
-    ProgramStateContext* m_context;
 };
 
 struct ProgramStateDispatcher {
-    ProgramStateDispatcher(ProgramStateContext ctx);
     ~ProgramStateDispatcher();
 
     void update(sf::Time deltaTime);
@@ -39,8 +36,10 @@ struct ProgramStateDispatcher {
     ProgramState* getNextState();
 
     void setProgramState(ProgramState& state);
+    static void setProgramStateContext(ProgramStateContext ctx);
+
+    static ProgramStateContext s_currCtx;
 private:
-    ProgramStateContext m_currCtx;
     ProgramState* m_currState = nullptr;
 };
 

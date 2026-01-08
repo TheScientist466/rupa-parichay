@@ -11,8 +11,7 @@
 #include "program_states.hpp"
 
 Renderer::Renderer() :
-    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close),
-    m_currStateDispatcher({&m_window})
+    m_window(sf::VideoMode(WINDOW_SIZE), PROJECT_NAME, sf::Style::Close)
 { 
     m_window.setFramerateLimit(WINDOW_FRAMERATE_LIMIT);
 
@@ -25,6 +24,8 @@ Renderer::Renderer() :
         return;
     }
     m_imguiInit = true;
+
+    ProgramStateDispatcher::setProgramStateContext({&m_window});
     m_currStateDispatcher.setProgramState(initState);
 }
 

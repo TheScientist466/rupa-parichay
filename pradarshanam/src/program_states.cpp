@@ -1,8 +1,12 @@
 #include "program_states.hpp"
+#include "SFML/System/Vector2.hpp"
+#include "canvas.hpp"
 
 #include <iostream>
 #include <imgui.h>
 #include <SFML/System/Time.hpp>
+
+ProgramStateContext ProgramStateDispatcher::s_currCtx;
 
 void ProgramStateDispatcher::update(sf::Time dt)        { m_currState->m_update(dt); }
 void ProgramStateDispatcher::gui()                      { m_currState->m_gui(); }
@@ -14,13 +18,12 @@ void ProgramStateDispatcher::setProgramState(ProgramState& s) {
         m_currState->m_shutdown();
     }
     m_currState = &s;
-    m_currState->m_context = &m_currCtx;
     m_currState->m_init();
 }
 
-ProgramStateDispatcher::ProgramStateDispatcher(ProgramStateContext _ctx) :
-    m_currCtx(_ctx)
-{ }
+void ProgramStateDispatcher::setProgramStateContext(ProgramStateContext _ctx) {
+    s_currCtx = _ctx;
+}
 
 ProgramStateDispatcher::~ProgramStateDispatcher() {
     if(m_currState != nullptr) {
@@ -53,9 +56,14 @@ ProgramState trainingState = {
 
 /// --- Live State ---
 /// This state will test and show the model
+Canvas* live_canvas;
 ProgramState liveState {
     .m_init = []() {
         std::cout << "Live State" << std::endl;
+        sf::Vector2u winSize = ProgramStateDispatcher::s_currCtx.window->getSize();
+        sf::Vector2u canvasSize(winSize.y, winSize.y);
+        live_canvas = new Canvas(canvasSize);
+        live_canvas->setParentWindow(ProgramStateDispatcher::s_currCtx.window);
         return 0;
     },
     .m_update = [](sf::Time dt) { },
@@ -63,10 +71,13 @@ ProgramState liveState {
         ImGui::Begin("Live");
         ImGui::Text("Live State");
         ImGui::End();
+
+        live_canvas->gui();
     },
     .m_draw = []() { },
     .m_shutdown = []() { 
         std::cout << "Exiting Live State" << std::endl;
+        delete live_canvas;
     },
     .m_getNextState = []() {
         return (ProgramState*)nullptr;
