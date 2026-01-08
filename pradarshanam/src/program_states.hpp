@@ -17,6 +17,9 @@ struct ProgramState {
 
     // function called just before the state is destroyed 
     void (*m_shutdown)();
+
+    // function which returns which state to change to
+    ProgramState* (*m_getNextState)();
 };
 
 struct ProgramStateDispatcher {
@@ -25,6 +28,7 @@ struct ProgramStateDispatcher {
     void update(sf::Time deltaTime);
     void gui();
     void draw();
+    ProgramState* getNextState();
 
     void setProgramState(ProgramState& state);
 private:

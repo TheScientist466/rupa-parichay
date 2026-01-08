@@ -42,7 +42,11 @@ int Renderer::run() {
         }
         m_deltaTime = m_deltaClock.restart();
         ImGui::SFML::Update(m_window, m_deltaTime);
-
+       
+        ProgramState* nextState = m_currStateDispatcher.getNextState();
+        if(nextState != nullptr) {
+            m_currStateDispatcher.setProgramState(*nextState);
+        }
         m_currStateDispatcher.update(m_deltaTime);
         m_currStateDispatcher.gui();
 
